@@ -1,13 +1,14 @@
 import React, { Component } from 'react';
+import Home from './HomeComponent';
 import Menu from './MenuComponent';
-import { DISHES } from '../shared/dishes';
 import Dishdetail from './DishdetailComponent';
-import { View, Platform } from 'react-native';
-// import { createStackNavigator } from 'react-navigation-stack';
 import { NavigationContainer } from '@react-navigation/native';
 import { createStackNavigator } from '@react-navigation/stack';
+import { createDrawerNavigator } from '@react-navigation/drawer';
 
 const MenuNavigator = createStackNavigator();
+const HomeNavigator = createStackNavigator();
+const MainNavigator = createDrawerNavigator();
 
 function MenuNavigatorScreen() {
     return (
@@ -36,6 +37,49 @@ function MenuNavigatorScreen() {
     )
 }
 
+function HomeNavigatorScreen() {
+    return (
+        <HomeNavigator.Navigator
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: "#512DA8"
+                },
+                headerTintColor: '#fff',
+                headerTitleStyle: {
+                    color: "#fff"
+                }
+            }}>
+            <HomeNavigator.Screen
+                name="Home"
+                component={Home}
+            />
+
+        </HomeNavigator.Navigator>
+    )
+}
+
+function MainNavigatorScreen() {
+    return (
+        <MainNavigator.Navigator
+            drawerStyle={{
+                backgroundColor: '#C9DFE7',
+                width: 240,
+            }}
+            initialRouteName="Home"
+        >
+            <MainNavigator.Screen
+                name="Home"
+                component={HomeNavigatorScreen}
+                options={{ title: 'Home', drawerLabel: 'Home' }}
+            />
+            <MainNavigator.Screen
+                name="Menu"
+                component={MenuNavigatorScreen}
+                options={{ title: 'Menu', drawerLabel: 'Menu' }}
+            />
+        </MainNavigator.Navigator>
+    );
+}
 
 class Main extends Component {
 
@@ -43,7 +87,7 @@ class Main extends Component {
 
         return (
             <NavigationContainer>
-                <MenuNavigatorScreen />
+                <MainNavigatorScreen />
             </NavigationContainer>
         );
     }
