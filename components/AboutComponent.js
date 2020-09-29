@@ -1,27 +1,66 @@
 import React, { Component } from 'react';
-import { ScrollView, View, Text } from 'react-native';
-import { Card } from 'react-native-elements';
+import { ScrollView, Text, FlatList } from 'react-native';
+import { Card, ListItem } from 'react-native-elements';
+import { connect } from 'react-redux';
+import { baseUrl } from '../shared/baseUrl';
 
-class Contact extends Component {
+const mapStateToProps = state => {
+    return {
+        leaders: state.leaders
+    }
+}
+
+
+function History() {
+    return (
+        <Card title='Our History'>
+            <Text>Started in 2010, Ristorante con Fusion quickly established itself as a
+            culinary icon par excellence in Hong Kong. With its unique brand of world
+            fusion cuisine that can be found nowhere else, it enjoys patronage from the
+            A-list clientele in Hong Kong.  Featuring four of the best three-star Michelin
+                chefs in the world, you never know what will arrive on your plate the next time you visit us.</Text>
+            <Text />
+            <Text>The restaurant traces its humble beginnings to The Frying Pan, a successful
+            chain started by our CEO, Mr. Peter Pan, that featured for the first time the
+                world's best cuisines in a pan.</Text>
+            <Text />
+        </Card>
+    )
+};
+
+
+class About extends Component {
+
 
     render() {
+
+        const renderLeaderItem = ({ item, index }) => {
+
+            return (
+                <ListItem
+                    key={index}
+                    title={item.name}
+                    subtitle={item.description}
+                    hideChevron={true}
+                    leftAvatar={{ source: { uri: baseUrl + item.image } }}
+                />
+            );
+        };
+
         return (
-            <Card title='Contact Information'>
-                <Text>121, Clear Water Bay Road</Text>
-                <Text />
-                <Text>Clear Water Bay, Kowloon</Text>
-                <Text />
-                <Text>HONG KONG</Text>
-                <Text />
-                <Text>Tel: +852 1234 5678</Text>
-                <Text />
-                <Text>Fax: +852 8765 4321</Text>
-                <Text />
-                <Text>Email:confusion@food.net</Text>
-                <Text />
-            </Card>
+            <ScrollView>
+                <History />
+                <Card title='Corporate Leadership'>
+                    <FlatList
+                        data={this.props.leaders.leaders}
+                        renderItem={renderLeaderItem}
+                        keyExtractor={item => item.id.toString()}
+                    />
+                </Card>
+            </ScrollView>
+
         )
     }
 }
 
-export default Contact;
+export default connect(mapStateToProps)(About);
